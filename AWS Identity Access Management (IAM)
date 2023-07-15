@@ -1,0 +1,13 @@
+Step1	Log into AWS Management Console
+Step2 Create 3 IAM Groups
+//developement group,operational group,management group
+Step3 Create 2 users in developement group 
+Step4 Select the Users menu. Navigate to the Users screen. You'll find it in the IAM dashboard, under the Identity and Access Management (IAM) drop-down menu on the left side of the screen. Click on Users.
+Step5 Add a user. Click on Add User to navigate to a user detail form. Provide all details, such as the username and access type.
+Step6 Similarily add 1..1 user in each operational group and management group.
+Step7 Now move ahead to the permission of developement group and add full access to this group.
+Step8 Then after move to the permission of operational group and add read only access to this group.
+Step9 Then after move to the permission of management group andd add no access policy to this group.
+Step10 Now whenever the users of developement group will log in they will be able to access all the services of aws.
+Step11 whenever the user of developement group will log in he will be able to access all the services of aws but will not be able to perform manipulation.
+Step12 whenever the user of developement group will log in he will not be able to access any of the aws services.

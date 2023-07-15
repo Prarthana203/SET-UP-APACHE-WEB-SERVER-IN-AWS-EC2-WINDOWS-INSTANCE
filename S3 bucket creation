@@ -1,0 +1,36 @@
+Create an S3 Bucket
+Step1.	Navigate to the Services menu at the top. Click on S3 in the Storage section.
+Step2.	On the S3 dashboard, click on Create bucket button.
+//Bucket name: Enter abcxyz
+//Note: S3 bucket names are globally unique, choose a name that is available.
+//Region: 
+//Object ownership: Select ACLs disabled (recommended) option
+//Leave other settings as default.
+Step3.	Click on the Create bucket button.
+Step4.	Ignore any type of warnings.
+Upload an Object 
+Step1.	Click on the bucket name and click on Upload button.
+Step2.	Download our sample text file from here or upload any file from your machine.
+Step3.	Click on the Add files button.
+Step4.	Browse for our sample.txt file or the file you've chosen instead.
+//Click on the Upload button.
+//You can watch the progress of the upload from within the transfer panel at the bottom of the screen. Since this is a very small file, you might not see the transfer. Once your file has been uploaded, it will be displayed in the bucket.
+Step5.	Access the object on the browser.
+Step6.	Change S3 object permissions.
+Step7.	Setup the bucket policy and permission and test the object accessibility.
+
+//bucket policy into the Bucket policy editor , to make all objects publically accessible.
+{
+    "Version": "2012-10-17",
+    "Id": "Policy1",
+    "Statement": [
+        {
+            "Sid": "Stmt1",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::zidemo/*"
+        }
+    ]
+}
+

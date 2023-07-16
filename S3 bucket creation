@@ -6,8 +6,9 @@ Step2.	On the S3 dashboard, click on Create bucket button.
 //Region: 
 //Object ownership: Select ACLs disabled (recommended) option
 //Leave other settings as default.
-Step3.	Click on the Create bucket button.
-Step4.	Ignore any type of warnings.
+Step3. In the option of Bucket settings for Block Public Access, Uncheck the option of Block all public access. And, Acknowledge the same by checking the below option
+Step4.	Click on the Create bucket button.
+Step5.	Ignore any type of warnings.
 Upload an Object 
 Step1.	Click on the bucket name and click on Upload button.
 Step2.	Download our sample text file from here or upload any file from your machine.

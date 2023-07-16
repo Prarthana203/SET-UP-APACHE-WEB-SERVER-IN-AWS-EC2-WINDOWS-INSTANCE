@@ -1,0 +1,60 @@
+Creating Launch Template
+Step1.	Make sure you are in the correct Region before proceeding with the Lab.
+Step2.	Navigate to EC2 by clicking on the Services menu in the top, then click on EC2 in the Compute section.
+Step3.	In the left navigation menu, scroll down to Launch Templates and click on Create launch template button
+Step4.	Launch template name: Enter zitemp
+Step5.	Template version description: Enter Launch template version 1
+Step6.	Launch template contents: 
+//Amazon machine image (AMI): Select Amazon Linux 2 AMI
+//Instance type: Select t2.micro
+Key pair (login):
+//Key pair name: Don't include in launch template
+Step7.	Network settings: 
+//Security groups: Select the Default security group of Default VPC
+Step8.	Keep all the settings as default.
+Step9.	Now, click on Create launch template button
+Step10.	Launch template is now created.
+Step11.	Click on the View launch template button. 
+Step12.	Launch template is now listed.
+Create an Auto Scaling Group
+Step1.	An Auto Scaling group is a scalable collection of EC2 instances. When you create an Auto Scaling group, you include information such as the subnets for the instances and the number of instances the group must maintain at all times.
+Step2.	Go to the left menu under EC2 and choose Auto Scaling Group under Auto Scaling
+Step3.	Click on the Create Auto Scaling group button.
+Step4.	Choose launch template or configuration
+//Auto Scaling group name: Enter whiz-ASG
+//Launch template: Select whizlabsLT
+//Click on the Next button.
+Step5.	 Configure settings
+//VPC: Select the Default VPC from the list.
+//Subnet: Select all the subnets.
+//Click on the Next button.
+Step6. Configure advanced options
+//No changes are needed on this page, click on the Next button. 
+Step7. Configure group size and scaling policies
+//Under Group size – optional
+//Desired capacity: Enter 2
+//Minimum capacity: Enter 1
+//Maximum capacity: Enter 3
+//Under Scaling policies – optional
+//Select None
+//Under Instance scale-in protection
+//No changes are needed, click on the Next button 
+Step8. Add notifications
+//No changes are needed on this page, click on the Next button. 
+Step9. Add tags
+//Enter tags in key-value pairs to identify your auto-scaling group.
+//Click on the Add tag button.
+//Key: Name
+//Value: zivalue(according to your will)
+//Click on the Next button 
+Step10.	Now scroll down and click on the Create Auto Scaling group button.
+Step11.	Whiz-ASG Auto scaling is created successfully.
+Step12.	You will be redirected to the autoscaling group page, you will be able to see that two instances are launched by the autoscaling group.
+Step13.	Now go to the EC2 instances list. You will see that there are two new running instances (which were created by your autoscaling group) You can confirm this from their tag name, which you gave at the time of creating the autoscaling group.
+Step14.	You have successfully created an autoscaling group with a policy of a minimum of 1 and a maximum of 2 instances
+Test Auto Scaling Group
+Step1.	For testing the auto-scaling policy, go to the EC2 instance list and select one of your instances.
+Step2.	Next, select an instance and click on Instance state and then Stop instance.
+Step3.	Click the Stop button on the pop-up window to stop your instance.
+Step4.	Once your instance is stopped (after 1-2 minutes) you can see that your stopped instance will be terminating automatically, and a new instance will be launched to fulfill the policy condition. A sample screenshot is provided below:
+//Launching a new instance may take a few minutes, you can refresh the page to view the new instance.

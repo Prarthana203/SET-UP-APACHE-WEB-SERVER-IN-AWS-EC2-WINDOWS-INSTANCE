@@ -1,0 +1,64 @@
+Create an S3 source Bucket
+Step1.	Navigate to the Services menu at the top. Click on S3 in the Storage section.
+Step2.	On the S3 dashboard, click on Create bucket button.
+//Bucket name: Enter abcxyz
+//Note: S3 bucket names are globally unique, choose a name that is available.
+//Region:
+//Object ownership: Select ACLs disabled (recommended) option
+Step3. In the option of Bucket settings for Block Public Access, Uncheck the option of Block all public access. And, Acknowledge the same by checking the below option
+Step4.	In the Option of Bucket Versioning, Check the option of Enable
+Step5.	Click on the Create bucket button.
+Step6.	Ignore any type of warnings.
+//Source bucket is created now, Let's create the target bucket.
+create the target bucket.
+Step1.	In the S3 dashboard, click on the Create bucket button and fill in the bucket details.
+Step2.	In the General Configuration, Bucket name: Enter whiztarget1 (Target bucket)
+//S3 Bucket names are globally unique, choose a name that is available.
+Step3.	Region: 
+Step4. Object ownership: Select ACLs disabled (recommended) option
+Step5. In the option of Bucket settings for Block Public Access, Uncheck the option of Block all public access. And, Acknowledge the same by checking the below option.
+Step6. In the Option of Bucket Versioning, Check the option of Enable.
+Step7.	Keep everything default and click on Create bucket button.
+Step8.	Both the Source and Target Buckets are created successfully.
+upload an Object to source bucket 
+Step1.	Click on the bucket name and click on Upload button.
+Step2.	Download our sample text file from here or upload any file from your machine.
+Step3.	Click on the Add files button.
+Step4.	Browse for our sample.txt file or the file you've chosen instead.
+//Click on the Upload button.
+//You can watch the progress of the upload from within the transfer panel at the bottom of the screen. Since this is a very small file, you might not see the transfer. Once your file has been uploaded, it will be displayed in the bucket.
+Step5.	Access the object on the browser.
+Step6.	Change S3 object permissions.
+Step7.	Setup the bucket policy and permission and test the object accessibility.
+//bucket policy into the Bucket policy editor , to make all objects publically accessible.
+{
+    "Version": "2012-10-17",
+    "Id": "Policy1",
+    "Statement": [
+        {
+            "Sid": "Stmt1",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::zidemo/*"
+        }
+    ]
+}
+Step8. Source bucket is created now, Let's create the target bucket
+Enable Replication in Source Bucket and add a rule
+Step1.	Now go to Source Bucket and click on Management. Scroll down and select Create replication rule button. 
+Step2.	Enter a rule name of your choice and keep the status as Enabled
+Step3.	Choose a rule scope : Select Apply to all objects in the bucket
+Step4.	Under Destination, select choose a bucket in this account and click on Browse S3
+Step5.	Select the target bucket created earlier and click on Choose path button.
+Step6.	Under IAM Role, Select Choose from existing IAM roles and select Create new role.
+Step7. Under the Destination Storage Class, select Change the storage class for the replicated objects and choose One Zone-IA.
+Step8. Leave everything as default. Review once and click on Save button. One Pop-up appears Select No, do not replicate existing objects and Click on Submit button.
+Step9. Now navigate to the source bucket and upload an Object(.txt or .png) in the Source bucket by clicking on Add Files. Click on Upload.
+Step10. Click on the Add files button and upload any object from your local machine and click on Upload button.
+Step11. Navigate to your Target Bucket to see the replication. It may take up to 3-5 minutes for replication.
+Step12. Now you have successfully configured the Cross-Region Replication in S3 Bucket.
+//Congratulations!
+Validation Test
+Step1.	Once the lab steps are completed, please click on the Validation button on the left side panel.
+Step2.	This will validate the resources in the AWS account and show you whether you have completed this lab successfully or not.

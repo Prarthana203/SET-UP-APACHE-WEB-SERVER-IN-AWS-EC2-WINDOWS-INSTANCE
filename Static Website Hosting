@@ -1,0 +1,47 @@
+Creating a S3 Bucket
+Step1.	Navigate to S3 by clicking on the Services menu at the top, then click on S3 in the Storage section.
+Step2.	In the S3 dashboard, click on the Create Bucket button.
+Step3.	In the General Configuration, Bucket name: Enter abcxyz
+//S3 Bucket names are globally unique, choose a name that is available. Maybe you can enter your name and create one.
+Step4.	AWS Region: Select US East (N. Virginia) us-east-1
+Step5.	Object ownership: Select ACLs disabled (recommended) option
+Step6.	In the option of Block Public Access settings for this bucket, Uncheck the option of Block all public access. 
+//Check the I acknowledge that the current settings might result in this bucket and the objects within becoming public checkbox.
+Step7. Keep everything default and click on Create Bucket button
+Enable Static Website Hosting settings
+Step1.	To proceed, go to the S3 bucket name that you created and click on it. After that, navigate to the Properties tab which can be found at the top of the screen.
+Step2.	Scroll down to the Static website hosting section and click on Edit button.
+Step3.	In the Static website hosting dialog box
+//Static website hosting: Select Enable
+//Hosting type: Choose Host a static website
+//Index document: Type index.html
+//Error document: Type error.html
+//Click on Save Changes.
+Step4. Go to the Properties tab of your S3 bucket, and find the Static website hosting section. Copy the Endpoint provided in this section to your clipboard and save it for future reference.
+Step5. The next step is to download the zip file by clicking on the link, extract it, and upload two files named index.html and error.html to the S3 bucket you created earlier.
+Step6. To configure your S3 bucket, access the Permissions tab and make the necessary configurations.
+//In the Permissions tab, Click on the Edit button beside the Bucket Policy.
+//You will be able to see a Blank policy editor.
+//Before creating the policy, you will need to copy the ARN (Amazon Resource Name) of your bucket.
+//Copy the ARN of your bucket to the clipboard. It is displayed at the top of the policy editor. it will look like ARN:“arn:aws:s3:::your-bucket-name".
+//In the policy below, Update the bucket ARN on the Resource key value and paste the below policy code in the editor.
+{       
+    "Id":"Policy1", 
+    "Version":"2012-10-17",
+    "Statement":[
+       {
+          "Sid":"Stmt1",
+          "Action":[
+             "s3:GetObject"
+          ],
+          "Effect":"Allow", 
+          "Resource":"replace-this-string-with-your-bucket-arn/*",
+          "Principal":"*"           
+       }            
+    ]
+}
+//Click on Save changes button.
+Test the website
+Step1.	Now copy the static website URL (that we saved earlier) and run it in your browser. You will be able to see the index.html file's text. A sample screenshot is attached to a file.
+Step2.	Copy the static website URL (which we saved earlier) , but this time, add some random characters to the end of the url to break it. When satisfied, hit [Enter]. You will be redirected to the error.html page automatically.
+/error 404,PAGE NOT FOUND!

@@ -1,0 +1,8 @@
+Installation steps of PuTTY on Windows
+Step 1: Download PuTTY Installer from its official website
+Step 2: Execute the Installer. To execute it Double Click on it and press Next.
+Step 3: Select your destination folder to install the PuTTY application, Click on Next if you don’t want to change the path.
+Step 4: Select the Product Features which you want to install with the PuTTY application and then Click on Install.
+Step 5: Now the installation process of PuTTY get finished. Click on Finish to complete the wizard.
+Step 6: Now you can open PuTTY from the start window for that click on the windows key or the howe icon and search PuTTY.
+//Now the application is successfully installed to run the cli commands go through the sample img for running cli commands on ubuntu instance using putty.

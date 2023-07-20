@@ -1,0 +1,100 @@
+ Create SNS Topic
+1.	Make sure you are in the US East (N. Virginia) us-east-1 Region.
+2.	Navigate to SNS by clicking on the Services menu available under the Application Integration section.
+3.	Click on Topics in left panel. Click Create topic
+5.	Select the Type as Standard. 
+6.	Under Details:
+//Name : Enter zitopic
+//Display name : Enter zitopoic
+7.	Leave other options as default and click on Create topic.
+8.	An SNS topic is now created.
+9.	Copy the ARN and save it for later
+Subscribe to SNS Topic
+1.	Once the SNS topic is created, scroll down below and click on Create Subscription
+2.	Under Details: 
+//Protocol : Select Email
+//Endpoint : Enter  <your Mail ID>
+//Leave other settings as default and click on create subscription.
+//Note: Make sure you give a valid email address, as you will receive an SNS notification to this email address.
+//Check your Spam box if you don't see the email in your Inbox.
+3.	You will receive an email confirming your subscription to your email
+4.	Click on Confirm subscription
+5.	Your email address is now subscribed to the SNS Topic zitopic
+Create an S3 Bucket
+1.	Navigate to AWS S3 by clicking on Services in the top left corner. S3 is available under Storage.
+2.	In the S3 dashboard, click on the Create Bucket button and fill in the bucket details.
+3.	In the General Configuration:
+//Bucket name: Enter ziprbucket
+//	Example :ziprbucket
+(Note: The Bucket Name must be unique across all existing bucket names in Amazon S3)
+//Region: Select 
+4.	Object ownership: Select ACLs disabled (recommended) option
+5.	Leave all other settings as default and click on Create bucket.
+6.	Select the created bucket and click Copy content on the top. Save the ARN.
+Update SNS Topic Access Policy
+1.	Navigate back to the SNS page.
+2.	Click on Topics.
+3.	Click on zisnsnotification.
+4.	Click on Edit in the top right corner to edit the Access Policy of the SNS topic.
+5.	Expand Access Policy. 
+6.	Update the SNS policy as shown below:
+//	Note: Here we need to update two things after pasting the below policy.
+//Remove the old SNS policy and add the new policy to the SNS topic
+//SNS Topic ARN in the Resources section below
+//S3 bucket ARN in the Condition section below.
+//{ 
+  "Version": "2008-10-17",  
+  "Id": "__default_policy_ID",  
+  "Statement": [  
+    {
+      "Sid": "__default_statement_ID",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Action": [
+        "SNS:GetTopicAttributes",
+        "SNS:SetTopicAttributes",
+        "SNS:AddPermission",
+        "SNS:RemovePermission",
+        "SNS:DeleteTopic",
+        "SNS:Subscribe",
+        "SNS:ListSubscriptionsByTopic",
+        "SNS:Publish",
+        "SNS:Receive"
+      ],
+      "Resource": "<Your_SNS_Topic_ARN>",
+      "Condition": {
+        "ArnLike": {
+          "aws:SourceArn": "<Your_Bucket_ARN>"
+        }
+      }
+    }   
+  ]   
+}
+7.	Note: Make sure to update the bucket ARN and SNS topic in the above policy.
+8.	Click on Save Changes.
+9.	Now, your SNS topic has access to send notification events based on S3 bucket events.
+Create S3 Event
+1.	Navigate back to the S3 page.
+2.	Click on the S3 bucket that you have created in the above step.
+3.	Go to the Properties tab and scroll down to Event notifications.
+4.	Click on Create event notification button.
+//Event name  : Enter ziemaileventforput
+//Event types : Check PUT
+//Under Destination, select SNS Topic 
+//Under SNS topic, select topic name created earlier.
+//Click on Save changes.
+5.	Note: If you are getting the below error, make sure to check that you have added PUT as condition above and completed Task 5 i.e. Updating the SNS Access Policy.
+6.	Now the S3 bucket has been enabled event notifications for putting new objects through our SNS topic.
+Testing the SNS Notification
+1.	Open your S3 bucket mys3buckettestingsns.
+2.	In the bucket, under Objects, click on Upload
+3.	Now click on Add Files and upload an image from your local system.
+4.	Once the image is successfully uploaded to the S3 bucket, click on Close. Now you can see the uploaded image under 
+5.	You have successfully received an SNS notification based on the PUT object event in S3 bucket.
+6.	Go to your mailbox. You should have received an email from SNS
+Completion and Conclusion
+1.	You have successfully used the AWS management console to create an Amazon SNS Topic.
+2.	You have successfully subscribed to an SNS topic using your email address.
+3.	You have successfully created an S3 bucket event to get SNS notifications sent to your email address.

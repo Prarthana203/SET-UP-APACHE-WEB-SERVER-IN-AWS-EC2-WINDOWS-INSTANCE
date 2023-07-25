@@ -1,0 +1,149 @@
+CREATE VPC
+Step1:	Make sure you are in the US East (N. Virginia) us-east-1 region.
+Step2.:Navigate to VPC under the services menu. Click on Your VPCs. 
+Step3:Click on Create VPC.
+//Name Tag : MyVPC
+//IPv4 CIDR block : 10.0.0.0/16
+//IPv6 CIDR block : Select No IPv6 CIDR Block
+//Tenancy : Default
+//Click on Create VPC.
+//The VPC is now created.
+
+CREATE PUBLIC AND PRIVATE SUBNETS
+Step1:	Navigate to Subnets in the left panel of the VPC page.
+Step2:Let's create Public subnet. Click on Create subnet.
+//VPC ID : Select MyVPC
+//Subnet Name : MyPublicSubnet
+//Availability Zone : No Preference
+//IPv4 CIDR block : 10.0.0.0/24
+//Click on Create subnet.
+Step3:Enable Auto Assign public IP to Instances created within this subnet.
+//Select MyPublicSubnet
+//Click on Actions.
+//Click on Modify auto-assign IP settings.
+//Enable auto-assign public IPv4 address   : Check
+//Click on Save.
+Step4:Create a private subnet. Click on Create subnet.
+//VPC ID : Select MyVPC
+//Subnet Name : MyPrivateSubnet
+//Availability Zone : No Preference
+//IPv4 CIDR block : 10.0.1.0/24
+//Click on Create subnet.
+//Two subnets are created.
+
+CREATE INTERNET GATEWAY
+Step1:Navigate Internet Gateways in the left and panel of the VPC page.
+Step2:Click on Create internet gateway.
+//Name tag    : MyIGW
+//Click on Create internet gateway.
+//Internet Gateway will be created.
+
+To attach Internet Gateway to a VPC, 
+//Select the Internet Gateway MyIGW.
+//Click on Actions. Select Attach to VPC.
+//VPC    : MyVPC
+//Click on Attach internet gateway, so MyIGW is attached to MyVPC.
+
+CREATE PUBLIC ROUTE TABLE AND CONFIGURE
+
+Step1:Navigate to Route Table in the left panel of the VPC page.
+Step2:Click on Create route table.
+//Name tag:PublicRouteTable
+//VPC : MyVPC
+//Click on Create route table.
+//A route table by name PublicRouteTable will be created.
+Step3:To attach an Internet Gateway, select PublicRouteTable.
+Step4:In the Routes tab:
+//Click on Edit Routes
+//On the next page, click on: Add route
+//Destination : Enter 0.0.0.0/0
+//Target : Select Internet Gateway, and once the internet gateways have been created, select MyIGW.
+//Click on Save changes.
+Step5:To associate the Public Subnet to the route table, select PublicRouteTable.
+//Click on the Subnet Associations tab.
+//Click on Edit subnet association.
+//On the next page, select MyPublicSubnet from the list displayed.
+//Click on Save associations.
+
+LAUNCHING AN EC2 INSTANCE IN PUBLIC SUBNET
+Step1:Click on Launch instances in EC2 service.
+Step2:Choose an Amazon Machine Image (AMI): Search for Amazon Linux 2 AMI in the search box and click on the select button.
+Step3:Choose an Instance Type, click on the Next: Configure Instance Details.
+Step4:Configure Instance Details
+//Network : MyVPC
+//Subnet : MyPublicSubnet
+Auto-assign Public IP    : Use Subnet Setting(Enable) - default
+//Leave all other settings as default.
+Step5:Create new Security Group with SSH and source should be anywhere.
+//Choose Type: SSH
+//Source: Anywhere
+Step6:Create a new key pair (MyKey.pem) to avoid any unwanted issues and login with the public IP as usual.
+
+LAUNCHING AN EC2 INSTANCE IN PRIVATE SUBNET
+Step1.	Click on Launch instances.
+Step2.	Choose an Amazon Machine Image (AMI)
+Step3.	Configure Instance Details: 
+//Network : MyVPC
+//Subnet : MyPrivateSubnet
+//Auto-assign Public IP : Use Subnet Setting(Disable) - default
+//Leave all other settings as default.
+Step4:Create separate Security Group:
+//Choose Type: SSH
+//Source: custom : 0.0.0.0/0
+//Key Pair : Select the existing key created earlier MyKey.pem.
+//Note the Private IP Address of MyPrivateEC2Server  like 10.0.1.45
+
+ 
+SSH INTO PUBLIC AND PRIVATE EC2 INSTANCE AND TEST INTERNET CONNECTIVITY
+Step1:Login into public subnet one Ec2-instance (first one)
+//Sudo su
+//yum -y update
+//Since the Internet Gateway MyIGW is connected to MyPublicSubnet, updates will be completed successfully.
+Step2:Now try SSH into MyPrivateEC2Server from MyPublicEC2Server. In order to SSH into MyPrivateEC2Server, first we need to create the PEM file in the public EC2.
+Step3:Create the MyKey.pem in MyPublicEC2Server.
+Step4:We have to open that .pem file which we have downloaded during creation of ec2-instances and paste here and save this file)
+//Check that the file was created correctly.
+Step5: Update Permissions for the MyKey.pem
+chmod 400 MyKey.pem
+Use the Private IP address 10.0.1.45 to SSH.
+ssh -i MyKey.pem ec2-user@10.0.1.45
+//You will see “Are you sure you want to continue connecting (yes/no)?” : Enter yes
+Step6:Switch to root user 
+//Sudo su
+Step7:Run the updates using the following command: 
+//yum -y update
+//As no internet access is provided for EC2 instances in a private subnet, you will not be able to get updates. After some time, you will get a fail message.
+
+CREATING NAT GATEWAY
+Step1: Go to VPC Page & In the Left Panel, click on NAT Gateways.
+Step2:Click on Create NAT gateway.
+//Name : MyNATGateway
+//Subnet  : Choose MyPublicSubnet in MyVPC
+//Elastic IP Allocation ID : Click on Allocate Elastic IP.
+//Once the new Elastic IP is allocated, click on Create NAT gateway.
+//Note that NAT Gateway is always created in a public subnet.
+
+UPDATE ROUTE TABLE AND CONFIGURE NAT GATEWAY
+Step1:Go to Route Tables in the left panel.
+Step2:You can see two Route Tables available for MyVPC
+Step3:To attach NAT Gateway, select the Main Route Table (which is different from the one created by you).
+Step4:In the Routes tab
+//Click on Edit routes
+//In the next page, Click on Add route  
+//Destination  :  0.0.0.0/0
+//Target  : Select NAT Gateway, and once the internet gateways have loaded, select the NAT Gateway you created. 
+Step5:Click on Save changes.
+//Now the Instances launched within MyPrivateSubnet can access the Internet through the NAT Gateway.
+
+TEST INTERNET CONNECTION FROM INSTANCE INSIDE PRIVATE SUBNET
+Step1:	SSH back into MyPublicEC2Server .
+Step2:Switch to root user 
+//sudo su.
+Step3:SSH into MyPrivateEC2Server
+//ssh -i "MyKey.pem" ec2-user@10.0.1.45
+Step4:Switch to root user
+//sudo su
+Step5:Run the updates using the following command: 
+//yum -y update
+Step6:You can see that the updates have been completed successfully in the terminal.
+Step7:This shows that MyPrivateEC2Server has internet access.
